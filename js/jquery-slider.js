@@ -1,5 +1,10 @@
 (function($) {
 	$.fn.hcjSlider = function(opts) {
+		//默认参数
+		var default={
+			runDirection:'left',
+			tabNav:1,
+		};
 		var	c = 0,
 			timer, //定时器
 			elem = $(this),//传入的选择器
