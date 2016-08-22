@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="x-ua-compatible" content="IE=Edge, chrome=1" />
+	<meta name="title" content="" />
+	<meta name="keywords" content="" />
+	<meta name="description" content="" />
+	<title>Document</title>
+	<style>
+		*{padding:0;margin:0;}
+		img{border:none;vertical-align: middle;}
+		a{text-decoration: none;outline: none;}
+		ul,li{list-style: none;}
+		.sliderWrap{width: 730px;height: 454px;overflow: hidden;margin:0 auto;position: relative;}
+		#slider{width: 2250px;left:0;overflow: hidden;position: absolute;display: block;}
+		#slider li{float: left;}
+		.prev,.next{position: absolute;top:50%;margin-top:-25px;height: 50px;line-height: 50px;width: 50px;text-align: center;background-color:#000;background-color: rgba(0,0,0,.25);color:white;font-family: simsun;font-size: 30px;cursor: pointer;}
+		.prev{left:0;}
+		.next{right:0;}
+		.controltabbox{position: absolute;bottom:10px;left: 50%;}
+		.controltabbox span{display: inline-block;width:15px;height: 15px;border-radius: 50%;background-color: #eee;cursor: pointer;margin-right: 5px;}
+		.controltabbox span.current{background-color: #e30005;}
+	</style>
+</head>
+<body>
+	<div class="sliderWrap">	
+		<ul id="slider">
+			<li><a href=""><img src="images/1.jpg" alt=""></a></li>
+			<li><a href=""><img src="images/2.jpg" alt=""></a></li>
+			<li><a href=""><img src="images/3.jpg" alt=""></a></li>
+		</ul>
+		
+	</div>
+<script src="js/jquery-1.11.1.js"></script>
+<script src="js/jquery-slider.js"></script>
+<script>
+	$(function(){
+		$("#slider").hcjSlider();
+	});
+</script>
+</body>
+</html>
+		
