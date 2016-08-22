@@ -1,9 +1,9 @@
 (function($) {
 	$.fn.hcjSlider = function(opts) {
 		//默认参数
-		var default={
+		var option={
 			runDirection:'left',
-			tabNav:1,
+			tabNav:1
 		};
 		var	c = 0,
 			timer, //定时器
@@ -36,7 +36,7 @@
 					if (c == len) {
 						c = 0;
 					}
-					eventFun.cqClass(c,controltabboxChild);
+					eventFun.eqClass(c,controltabboxChild);
 				}
 			},
 			//上一页处理程序
@@ -55,11 +55,11 @@
 						c = len;
 					}
 					c--;
-					eventFun.cqClass(c,controltabboxChild);
+					eventFun.eqClass(c,controltabboxChild);
 				}
 			},
 			//控制按钮设置当前样式
-			cqClass:function(c,obj){
+			eqClass:function(c,obj){
 				obj.eq(c).addClass('current').siblings().removeClass('current');
 			},
 			//图片首尾调换
@@ -86,13 +86,13 @@
 				if (event.type == 'mouseenter') {
 					clearTimer();
 					var index=$(this).index();
-					elem.stop(true, true).animate({
+					elem.animate({
 						left: pos.left + index * -lenW
 					}, 1000);
-					eventFun.cqClass(index,controltabboxChild);
+					eventFun.eqClass(index,controltabboxChild);
 				}
 				if (event.type == 'mouseleave') {
-					setTimer();
+					elem.stop(true,true);
 				}
 			}
 		};
