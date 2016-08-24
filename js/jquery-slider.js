@@ -7,11 +7,6 @@
 			return;
 		}
 		//默认参数
-<<<<<<< HEAD
-		var option={
-			runDirection:'left',
-			tabNav:1
-=======
 		var defaults={
 			tabNav:true,//有没有tab控制按钮 默认有
 			pageNav:true,//有没有页码控制按钮 默认有
@@ -20,7 +15,6 @@
 			tabNavChildStyle:'span',//tab控制按钮公共样式
 			effect:'scroll',//动画的效果
 			tabNavMr:6////tab控制按钮右外边距
->>>>>>> origin/master
 		};
 		var options=$.extend(defaults,opts);
 		var c=0,//索引
@@ -46,13 +40,10 @@
 						});
 						eventFun._replaceFirst(0);
 					});
-<<<<<<< HEAD
 					if (c == len) {
 						c = 0;
 					}
 					eventFun.eqClass(c,controltabboxChild);
-=======
->>>>>>> origin/master
 				}
 			},
 			//上一页无缝滚动处理程序
@@ -65,7 +56,6 @@
 					elem.animate({
 						left: 0
 					}, 1000);
-<<<<<<< HEAD
 					if (c == 0) {
 						c = len;
 					}
@@ -76,8 +66,6 @@
 			//控制按钮设置当前样式
 			eqClass:function(c,obj){
 				obj.eq(c).addClass('current').siblings().removeClass('current');
-=======
-				}
 			},
 			//下一页谈入处理程序
 			pagenClickEfade:function(){
@@ -87,7 +75,6 @@
 				}
 				eventFun.eqClass(c,controltabboxChild);	
 				elem.children().eq(c).fadeIn(300).siblings().fadeOut(100);
->>>>>>> origin/master
 			},
 			//上一页谈入处理程序
 			pagepClickEfade:function(){
@@ -139,17 +126,6 @@
 			tabnavhover: function(event) {
 				var index=$(this).index();
 				if (event.type == 'mouseenter') {
-<<<<<<< HEAD
-					clearTimer();
-					var index=$(this).index();
-					elem.animate({
-						left: pos.left + index * -lenW
-					}, 1000);
-					eventFun.eqClass(index,controltabboxChild);
-				}
-				if (event.type == 'mouseleave') {
-					elem.stop(true,true);
-=======
 					eventFun._clearTimer();
 					if(options.effect=='scroll'){
 						eventFun.timerOut=setTimeout(function(){
@@ -197,7 +173,6 @@
 				}
 				if(length==len){//此时尾做首
 					elemChild.last().remove().prependTo(elem);
->>>>>>> origin/master
 				}
 			}
 		};
