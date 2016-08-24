@@ -8,24 +8,25 @@
 	<meta name="description" content="" />
 	<title>Document</title>
 	<style>
+		.clf:after{ display: block; content: ''; clear: both; height: 0; visibility: hidden; }
 		*{padding:0;margin:0;}
 		img{border:none;vertical-align: middle;}
 		a{text-decoration: none;outline: none;}
 		ul,li{list-style: none;}
-		.sliderWrap{width: 730px;height: 454px;overflow: hidden;margin:0 auto;position: relative;}
+		.sliderWrap{width: 730px;height: 454px;overflow: hidden;margin:5px auto;position: relative;}
 		#slider{width: 2250px;left:0;overflow: hidden;position: absolute;display: block;}
-		#slider li{float: left;}
+		#slider li{float: left;overflow: hidden;}
 		.prev,.next{position: absolute;top:50%;margin-top:-25px;height: 50px;line-height: 50px;width: 50px;text-align: center;background-color:#000;background-color: rgba(0,0,0,.25);color:white;font-family: simsun;font-size: 30px;cursor: pointer;}
 		.prev{left:0;}
 		.next{right:0;}
-		.controltabbox{position: absolute;bottom:10px;left: 50%;}
-		.controltabbox span{display: inline-block;width:15px;height: 15px;border-radius: 50%;background-color: #eee;cursor: pointer;margin-right: 5px;}
-		.controltabbox span.current{background-color: #e30005;}
+		.span{display:block;width:15px;height: 15px;border-radius: 50%;background-color: #eee;cursor: pointer;float: left;}
+		.span.current{background-color: #e30005;}
 	</style>
 </head>
 <body>
 	<div class="sliderWrap">	
 		<ul id="slider">
+			<li><a href=""><img src="images/2.jpg" alt=""></a></li>
 			<li><a href=""><img src="images/1.jpg" alt=""></a></li>
 			<li><a href=""><img src="images/2.jpg" alt=""></a></li>
 			<li><a href=""><img src="images/3.jpg" alt=""></a></li>
@@ -36,7 +37,15 @@
 <script src="js/jquery-slider.js"></script>
 <script>
 	$(function(){
-		$("#slider").hcjSlider();
+		$("#slider").hcjSlider({
+			tabNav:true,
+			pageNav:true,
+			tabNavPosition:'middle',
+			tabnavCur:'current',
+			tabNavMr:6,
+			tabNavChildStyle:'span',
+			effect:'efade'
+		});
 	});
 </script>
 </body>
