@@ -63,10 +63,6 @@
 					eventFun.eqClass(c,controltabboxChild);
 				}
 			},
-			//控制按钮设置当前样式
-			eqClass:function(c,obj){
-				obj.eq(c).addClass('current').siblings().removeClass('current');
-			},
 			//下一页谈入处理程序
 			pagenClickEfade:function(){
 				c++;
