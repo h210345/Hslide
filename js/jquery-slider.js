@@ -174,7 +174,18 @@
 		};
 		var setStyle=$.fn.hcjSlider.setStyle={};
 		//设置tab控制按钮的样式
+		setStyle.middleLeft=null;
+		setStyle.fullScreenW=function(){
+			var windowW=$(window).width();
+			if(lenW>=windowW){
+				setStyle.middleLeft=windowW;
+			}else{
+				setStyle.middleLeft=lenW;
+			}
+		};
+		window.onresize=function(){setStyle.setTabNavCss();};
 		setStyle.setTabNavCss=function(){
+			setStyle.fullScreenW();
 			controltabboxChild.addClass(options.tabNavChildStyle);
 			controltabboxChild.css({'margin-right':options.tabNavMr});
 			switch(options.tabNavPosition) {
@@ -182,7 +193,7 @@
 					controltabbox.css({
 						bottom:10,
 						position: 'absolute',
-						left:lenW/2,
+						left:setStyle.middleLeft/2,
 						'margin-left':-(controltabbox.width()-options.tabNavMr)/2
 					});
 					break;
@@ -208,7 +219,7 @@
 		//滚动时 需设置图片容器宽度
 		setStyle.setElemCss=function(){
 			elem.css({
-				width: len * lenW
+				width: len * lenW,
 			});
 		};
 		//efade 效果需设置的样式
@@ -237,7 +248,7 @@
 			}
 			//页码控制按钮
 			if(options.pageNav){
-				next = $('<div>></div>');//上一页盒子
+				next = $('<div>></div>').attr('onselectstart','return false');//上一页盒子
 				prev = $('<div><</div>');//下一页盒子
 				next.addClass('next').appendTo(elem.parent()).hide();//上一页盒子增加样式
 				prev.addClass('prev').appendTo(elem.parent()).hide();//下一页盒子增加样式
