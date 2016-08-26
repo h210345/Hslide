@@ -198,6 +198,7 @@
 		setStyle.middleLeft=null;
 		setStyle.fullScreenW=function(){
 			var windowW=$(window).width();
+			console.log(controltabbox.width());
 			if(lenW>=windowW){
 				setStyle.middleLeft=windowW;
 			}else{
@@ -207,8 +208,12 @@
 		window.onresize=function(){setStyle.setTabNavCss();};
 		setStyle.setTabNavCss=function(){
 			setStyle.fullScreenW();
-			controltabboxChild.addClass(options.tabNavChildStyle);
+			controltabboxChild.addClass(options.tabNavChildStyle);//给所有tab增加共有样式
+			controltabboxChild.eq(0).addClass(options.tabnavCur);//第一个增加当前样式
 			controltabboxChild.css({'margin-right':options.tabNavMr});
+			controltabbox.css({//设置控制按钮box的width;因为定位之后他宽度会随着定位的父级
+				width:(options.tabNavMr+controltabboxChild.eq(0).width())*len
+			})
 			switch(options.tabNavPosition) {
 				case 'middle':
 					controltabbox.css({
@@ -222,7 +227,7 @@
 					controltabbox.css({
 						right:30,
 						bottom:10,
-						position: 'absolute',
+						position: 'absolute'
 					});
 					break;
 				case 'rightMiddle':
@@ -239,7 +244,8 @@
 		};
 		//滚动时 需设置图片容器宽度
 		setStyle.setElemCss=function(){
-			var elemW,elemParentW;
+			// 图片个数分为 1，大于1
+			var elemW,elemParentW;//每屏图片个数会影响其父级及父级的父级的宽度
 			if(options.firstScreenShowNum>1){
 				elemParentW=(options.firstScreenShowNum*lenW)+((options.firstScreenShowNum-1)*options.firstScreenShowMr);
 				elemW=(len * lenW)+(len*options.firstScreenShowMr);
@@ -261,7 +267,7 @@
 		};
 		//efade 效果需设置的样式
 		setStyle.setFadeCss=function(){
-			elem.height(lenH).parent(lenH);
+			elem.height(lenH).parent().height(lenH);
 			li.css({
 				position:'absolute',
 				float:'none',
@@ -272,20 +278,19 @@
 		function createElem(){
 			//tab控制按钮
 			if(options.tabNav){
-				controltabbox = $('<ul></ul>').css({'display':'inline-block'});//tab控制按钮盒子
+				controltabbox = $('<ul></ul>');//tab控制按钮盒子
 				controltabnav = "<li></li>";//tab控制按钮盒子内部元素
 				controltabbox.appendTo(elem.parent());//tab控制按钮追加到文档
 				for (var i = 0; i < len; i++) {
 					controltabbox.append(controltabnav);//tab控制按钮box追加elem
 				}
 				controltabboxChild=controltabbox.children();//tab控制按钮集合
-				controltabboxChild.eq(0).addClass(options.tabnavCur);//第一个增加当前样式
 				controltabboxChild.bind('mouseenter mouseleave', eventFun.tabnavhover);
 				setStyle.setTabNavCss();
 			}
 			//页码控制按钮
 			if(options.pageNav){
-				next = $('<div>></div>').attr('onselectstart','return false');//上一页盒子
+				next = $('<div>></div>');//上一页盒子
 				prev = $('<div><</div>');//下一页盒子
 				next.addClass('next').appendTo(elem.parent()).hide();//上一页盒子增加样式
 				prev.addClass('prev').appendTo(elem.parent()).hide();//下一页盒子增加样式
