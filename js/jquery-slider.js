@@ -261,7 +261,7 @@
 		};
 		//efade 效果需设置的样式
 		setStyle.setFadeCss=function(){
-			elem.height(lenH);
+			elem.height(lenH).parent(lenH);
 			li.css({
 				position:'absolute',
 				float:'none',
