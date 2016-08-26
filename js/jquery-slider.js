@@ -13,10 +13,10 @@
 			tabNavPosition:'middle',//tab控制按钮位置 默认中
 			tabnavCur:'current',//tab控制按钮当前样式
 			tabNavChildStyle:'span',//tab控制按钮公共样式
-			effect:'scroll',//动画的效果
-			tabNavMr:6,
-			firstScreenShowNum:1,////tab控制按钮右外边距
-			firstScreenShowMr:0//如果首屏显示个数大于1  给每个图片大的右边距
+			effect:'scroll',//动画的效果 默认滚动
+			tabNavMr:6,//默认是6
+			firstScreenShowNum:1,////tab控制按钮右外边距 默认是1
+			firstScreenShowMr:0//如果首屏显示个数大于1  给每个图片大的右边距 默认0
 		};
 		var options=$.extend(defaults,opts);
 		var c=0,//索引
@@ -177,14 +177,14 @@
 			_replaceFirst:function(length){
 				var elemChild=elem.find('li');
 				if(length==0){//此时首做尾
-					if(options.firstScreenShowNum){
+					if(options.firstScreenShowNum>1){
 						elem.find('li:lt('+options.firstScreenShowNum+')').remove().appendTo(elem);
 					}else{
 						elemChild.eq(length).remove().appendTo(elem);
 					}
 				}
 				if(length==len){//此时尾做首
-					if(options.firstScreenShowNum){
+					if(options.firstScreenShowNum>1){
 						var gtLen=(len-options.firstScreenShowNum)-1;
 						elem.find('li:gt('+gtLen+')').remove().prependTo(elem);
 					}else{
