@@ -14,7 +14,9 @@
 			tabnavCur:'current',//tab控制按钮当前样式
 			tabNavChildStyle:'span',//tab控制按钮公共样式
 			effect:'scroll',//动画的效果
-			tabNavMr:6////tab控制按钮右外边距
+			tabNavMr:6,
+			firstScreenShowNum:1,////tab控制按钮右外边距
+			firstScreenShowMr:0//如果首屏显示个数大于1  给每个图片大的右边距
 		};
 		var options=$.extend(defaults,opts);
 		var c=0,//索引
@@ -33,7 +35,7 @@
 			pagenClickwf: function() {
 				if(eventFun._booleanAnimate()){
 					elem.animate({
-						left: pos.left + (-lenW)
+						left: eventFun.returnWfRange()
 					}, 1000, function() {
 						elem.css({
 							left: 0
@@ -51,7 +53,7 @@
 				if(eventFun._booleanAnimate()){
 					eventFun._replaceFirst(len);
 					elem.css({
-						left: pos.left + (-lenW)
+						left: eventFun.returnWfRange()
 					});
 					elem.animate({
 						left: 0
@@ -62,6 +64,16 @@
 					c--;
 					eventFun.eqClass(c,controltabboxChild);
 				}
+			},
+			//返回无缝滚动的距离
+			returnWfRange:function(){
+				var ncRange;
+				if(options.firstScreenShowNum>1){//无缝首屏图片个数大于1
+					ncRange=-elem.parent().width();
+				}else{
+					ncRange=pos.left+(-lenW);
+				}
+				return ncRange;
 			},
 			//下一页谈入处理程序
 			pagenClickEfade:function(){
@@ -165,10 +177,19 @@
 			_replaceFirst:function(length){
 				var elemChild=elem.find('li');
 				if(length==0){//此时首做尾
-					elemChild.eq(length).remove().appendTo(elem);
+					if(options.firstScreenShowNum){
+						elem.find('li:lt('+options.firstScreenShowNum+')').remove().appendTo(elem);
+					}else{
+						elemChild.eq(length).remove().appendTo(elem);
+					}
 				}
 				if(length==len){//此时尾做首
-					elemChild.last().remove().prependTo(elem);
+					if(options.firstScreenShowNum){
+						var gtLen=(len-options.firstScreenShowNum)-1;
+						elem.find('li:gt('+gtLen+')').remove().prependTo(elem);
+					}else{
+						elemChild.last().remove().prependTo(elem);
+					}
 				}
 			}
 		};
@@ -218,8 +239,24 @@
 		};
 		//滚动时 需设置图片容器宽度
 		setStyle.setElemCss=function(){
+			var elemW,elemParentW;
+			if(options.firstScreenShowNum>1){
+				elemParentW=(options.firstScreenShowNum*lenW)+((options.firstScreenShowNum-1)*options.firstScreenShowMr);
+				elemW=(len * lenW)+(len*options.firstScreenShowMr);
+			}else{
+				elemW=len * lenW;
+				elemParentW=options.firstScreenShowNum*lenW;
+			}
 			elem.css({
-				width: len * lenW,
+				width: elemW
+			});
+			elem.parent().css({
+				width:elemParentW,
+				height:lenH
+			});
+			li.css({
+				'margin-right':options.firstScreenShowMr,
+				'float':'left'
 			});
 		};
 		//efade 效果需设置的样式
@@ -272,7 +309,7 @@
 			// 无缝
 			wfScroll:function(){
 				elem.animate({
-					left: pos.left + (-lenW)
+					left: eventFun.returnWfRange()
 				}, 1000, function() {
 					elem.css({
 						left: 0
@@ -308,6 +345,9 @@
 		//判断效果是什么然后设置其样式
 		switch(options.effect) {
 			case 'scroll':
+			setStyle.setElemCss();
+				break;
+			case 'wfScroll':
 			setStyle.setElemCss();
 				break;
 			case 'efade':
