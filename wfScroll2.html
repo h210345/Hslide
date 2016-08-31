@@ -6,7 +6,7 @@
 	<meta name="title" content="" />
 	<meta name="keywords" content="" />
 	<meta name="description" content="" />
-	<title>默认</title>
+	<title>无缝滚动（首位互换 没有tab按钮 1张）</title>
 	<style>
 		.clf:after{ display: block; content: ''; clear: both; height: 0; visibility: hidden; }
 		*{padding:0;margin:0;}
@@ -15,8 +15,8 @@
 		a{text-decoration: none;outline: none;}
 		ul,li{list-style: none;}
 		.sliderWrap{overflow: hidden;position: relative;margin:0 auto;}
-		#slider{overflow: hidden;position: relative;left:0;}
-		#slider li{overflow: hidden;}
+		#slider{overflow: hidden;position: absolute;left:0px;width: 300%;}
+		#slider li{overflow: hidden;width: 439px;height: 236px; float: left;}
 		.prev,.next{position: absolute;top:50%;margin-top:-25px;height: 50px;line-height: 50px;width: 50px;text-align: center;background-color:#000;background-color: rgba(0,0,0,.25);color:white;font-family: simsun;font-size: 30px;cursor: pointer;-moz-user-select:none;}
 		.prev{left:0;}
 		.next{right:0;}
@@ -45,13 +45,9 @@
 		$("#slider").hcjSlider({
 			tabNav:false,
 			pageNav:true,
-			tabNavPosition:'middle',
-			tabnavCur:'current',
-			tabNavMr:6,
-			tabNavChildStyle:'span',
 			effect:'wfScroll',
-			firstScreenShowNum:2,
-			firstScreenShowMr:6,
+			firstScreenShowNum:1,
+			firstScreenShowMr:0,
 			prev:'prev',
 			next:'next',
 			speed:500

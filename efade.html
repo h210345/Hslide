@@ -16,7 +16,7 @@
 		ul,li{list-style: none;}
 		.sliderWrap{overflow: hidden;position: relative;margin:0 auto;}
 		#slider{overflow: hidden;}
-		#slider li{overflow: hidden;}
+		#slider li{overflow: hidden;width: 439px;height: 236px;}
 		.prev,.next{position: absolute;top:50%;margin-top:-25px;height: 50px;line-height: 50px;width: 50px;text-align: center;background-color:#000;background-color: rgba(0,0,0,.25);color:white;font-family: simsun;font-size: 30px;cursor: pointer;-moz-user-select:none;}
 		.prev{left:0;}
 		.next{right:0;}
@@ -52,6 +52,8 @@
 			effect:'efade',
 			firstScreenShowNum:1,
 			firstScreenShowMr:0,
+			prev:'prev',
+			next:'next',
 			speed:500
 		});
 	});

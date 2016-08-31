@@ -22,8 +22,8 @@
 		var options=$.extend(defaults,opts);
 		var c=0,//索引
 			timer, //定时器
-			lenW = li.eq(0).find('img').width(),//单个图片的宽度
-			lenH = li.eq(0).find('img').height(),//单个图片的高度
+			lenW = li.eq(0).width(),//单个图片的宽度
+			lenH = li.eq(0).height(),//单个图片的高度
 			pos = elem.position(),//图片容器的定位位置
 			controltabbox,//tab控制按钮box
 			controltabnav,//tab控制按钮box中需要追加的元素
@@ -240,9 +240,6 @@
 		window.onresize=function(){setStyle.setTabNavCss();};
 		setStyle.setTabNavCss=function(){
 			setStyle.fullScreenW();
-			controltabboxChild.addClass(options.tabNavChildStyle);//给所有tab增加共有样式
-			controltabboxChild.eq(0).addClass(options.tabnavCur);//第一个增加当前样式
-			controltabboxChild.css({'margin-right':options.tabNavMr});
 			controltabbox.css({//设置控制按钮box的width;因为定位之后他宽度会随着定位的父级
 				width:(options.tabNavMr+controltabboxChild.eq(0).width())*len
 			})
@@ -304,9 +301,8 @@
 			});
 			li.css({
 				'margin-right':options.firstScreenShowMr,
-				'float':'left'
 			});
-		};
+		};		
 		//创建追加控制按钮元素
 		function createElem(){
 			//tab控制按钮
@@ -325,6 +321,9 @@
 					controltabbox.append(controltabnav);//tab控制按钮box追加elem
 				}
 				controltabboxChild=controltabbox.children();//tab控制按钮集合
+				controltabboxChild.addClass(options.tabNavChildStyle);//给所有tab增加共有样式
+				controltabboxChild.eq(0).addClass(options.tabnavCur);//第一个增加当前样式
+				controltabboxChild.css({'margin-right':options.tabNavMr});
 				controltabboxChild.bind('mouseenter mouseleave', eventFun.tabnavhover);
 				setStyle.setTabNavCss();
 			}
@@ -332,8 +331,8 @@
 			if(options.pageNav){
 				next = $('<div>></div>');//上一页盒子
 				prev = $('<div><</div>');//下一页盒子
-				next.addClass('next').appendTo(elem.parent()).hide();//上一页盒子增加样式
-				prev.addClass('prev').appendTo(elem.parent()).hide();//下一页盒子增加样式
+				next.addClass(options.next).appendTo(elem.parent()).hide();//上一页盒子增加样式
+				prev.addClass(options.prev).appendTo(elem.parent()).hide();//下一页盒子增加样式
 				if(options.effect=='efade'){
 					next.bind('click', eventFun.pagenClickEfade);//上一个委派单击
 					prev.bind('click', eventFun.pagepClickEfade);//下一个委派单击
