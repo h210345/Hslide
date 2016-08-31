@@ -6,7 +6,7 @@
 	<meta name="title" content="" />
 	<meta name="keywords" content="" />
 	<meta name="description" content="" />
-	<title>默认</title>
+	<title>淡入淡出（每屏1张 满屏）</title>
 	<style>
 		.clf:after{ display: block; content: ''; clear: both; height: 0; visibility: hidden; }
 		*{padding:0;margin:0;}
@@ -15,27 +15,20 @@
 		a{text-decoration: none;outline: none;}
 		ul,li{list-style: none;}
 		.sliderWrap{overflow: hidden;position: relative;margin:0 auto;}
-		#slider{overflow: hidden;}
+		#slider{overflow: hidden;position: absolute;left:50%;margin-left: -960px;}
 		#slider li{overflow: hidden;}
 		.prev,.next{position: absolute;top:50%;margin-top:-25px;height: 50px;line-height: 50px;width: 50px;text-align: center;background-color:#000;background-color: rgba(0,0,0,.25);color:white;font-family: simsun;font-size: 30px;cursor: pointer;-moz-user-select:none;}
 		.prev{left:0;}
 		.next{right:0;}
 		.span{display:block;width:15px;height: 15px;border-radius: 50%;background-color: #c7ceb8;cursor: pointer;float: left;}
 		.span.current{background-color:#84b308;}
-
 	</style>
 </head>
 <body>
 	<div class="sliderWrap">	
 		<ul id="slider">
-			<li><a href=""><img src="images/7.jpg" alt=""></a></li>
-			<li><a href=""><img src="images/8.jpg" alt=""></a></li>
-			<li><a href=""><img src="images/9.jpg" alt=""></a></li>
-			<li><a href=""><img src="images/10.jpg" alt=""></a></li>
-			<li><a href=""><img src="images/11.jpg" alt=""></a></li>
-			<li><a href=""><img src="images/12.jpg" alt=""></a></li>
-			<li><a href=""><img src="images/13.jpg" alt=""></a></li>
-			<li><a href=""><img src="images/14.jpg" alt=""></a></li>
+			<li><a href=""><img src="images/5.jpg" alt=""></a></li>
+			<li><a href=""><img src="images/6.jpg" alt=""></a></li>
 		</ul>
 	</div>
 <script src="js/jquery-1.11.1.js"></script>

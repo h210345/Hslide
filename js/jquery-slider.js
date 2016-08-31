@@ -3,7 +3,8 @@
 		var	elem = $(this),//传入的选择器
 			li = elem.children(),//图片集合
 			len = li.length;//图片长度
-		if(len<=1){
+			console.log(this);
+		if(len<=1||this.length==0){
 			return;
 		}
 		//默认参数
@@ -66,10 +67,10 @@
 			//返回无缝滚动的距离
 			returnWfRange:function(m){
 				var ncRange;
-				if(options.firstScreenShowNum>1){//无缝首屏图片个数大于1
-					ncRange=pos.left-elem.parent().width()*m;
+				if(pos.left==0){
+					ncRange=-setStyle.elemParentW*m;
 				}else{
-					ncRange=pos.left+(-setStyle.elemParentW)*m;
+					ncRange=pos.left+pos.left*m;
 				}
 				return ncRange;
 			},
@@ -310,14 +311,12 @@
 		function createElem(){
 			//tab控制按钮
 			if(options.tabNav){
-				if(options.effect=='lookScroll'){
+				if(options.effect=='lookScroll'){//重置len 因为这个效果是前后都多添了options.firstScreenShowNum个元素
 					if(options.firstScreenShowNum>1){
 						len=(len-(options.firstScreenShowNum*2))/options.firstScreenShowNum
-
 					}else{
 						len=len-2;
 					}
-					
 				}
 				controltabbox = $('<ul></ul>');//tab控制按钮盒子
 				controltabnav = "<li></li>";//tab控制按钮盒子内部元素
@@ -359,7 +358,7 @@
 			// 无缝首位互换位置
 			wfScroll:function(){
 				elem.animate({
-					left: eventFun.returnWfRange(1)
+					left: eventFun.returnWfRange(1)//这种效果只需要传个1 就行 因为不需要跟着索引递增
 				}, options.speed, function() {
 					elem.css({
 						left: 0
@@ -407,7 +406,7 @@
 			}
 		};
 		//判断效果是什么然后设置其样式
-		if(elem){
+		if(options.effect){
 			setStyle.setElemCss();
 			if(options.effect=='efade'){
 				setStyle.setFadeCss();
