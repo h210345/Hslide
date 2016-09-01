@@ -16,6 +16,9 @@
 			tabNavChildStyle:'span',//tab控制按钮公共样式
 			effect:'scroll',//动画的效果 默认滚动
 			tabNavMr:6,//默认是6
+			prev:'prev',
+			next:'next',
+			direction:'left',
 			firstScreenShowNum:1,////tab控制按钮右外边距 默认是1
 			firstScreenShowMr:0//如果首屏显示个数大于1  给每个图片大的右边距 默认0
 		};
@@ -64,13 +67,45 @@
 					c--;
 				}
 			},
+			//上一页无缝滚动处理程序 方向上
+			pagepClickwfUp: function() {
+				if(eventFun._booleanAnimate()){
+					eventFun._replaceFirst(len);
+					elem.css({
+						top: eventFun.returnWfRange(1)
+					});
+					elem.animate({
+						top: 0
+					}, options.speed);
+					if (c == 0) {
+						c = len;
+					}
+					c--;
+				}
+			},
+			//下一页无缝滚动处理程序 方向上
+			pagenClickwfUp: function() {
+				if(eventFun._booleanAnimate()){
+					elem.animate({
+						top: eventFun.returnWfRange(1)
+					}, options.speed, function() {
+						elem.css({
+							top: 0
+						});
+						eventFun._replaceFirst(0);
+					});
+					if (c == len) {
+						c = 0;
+					}
+				}
+			},
 			//返回无缝滚动的距离
 			returnWfRange:function(m){
 				var ncRange;
-				if(pos.left==0){
-					ncRange=-setStyle.elemParentW*m;
+				if(options.direction=='up'){
+					ncRange=pos.top-((setStyle.elemParentH+options.firstScreenShowMr)*m);
 				}else{
-					ncRange=pos.left+pos.left*m;
+					ncRange=pos.left-((setStyle.elemParentW+options.firstScreenShowMr)*m);
 				}
 				return ncRange;
 			},
@@ -107,6 +142,19 @@
 				}
 				
 			},
+			//上一页滚到头再返回处理程序
+			pagepClickScroll: function() {
+				if(eventFun._booleanAnimate()){
+					if (c == 0) {
+						c = len;
+					}
+					c--;
+					eventFun.eqClass(c,controltabboxChild);		
+					elem.stop(true,true).animate({
+						left: pos.left + (-lenW*c)
+					});
+				}
+			},
 			//上一页无缝滚动;首位前面添加一个末尾的图片;末尾添加一个首位的图片 视差来实现无缝
 			lookPagepClickScroll: function() {
 				if(eventFun._booleanAnimate()){
@@ -136,18 +184,32 @@
 				}
 				
 			},
-			//上一页滚到头再返回处理程序
-			pagepClickScroll: function() {
+			//上一页 向上无缝滚动;首位前面添加一个末尾的图片;末尾添加一个首位的图片 视差来实现无缝
+			lookPagepClickScrollUp: function() {
 				if(eventFun._booleanAnimate()){
 					if (c == 0) {
 						c = len;
+						elem.css({top:(c+1)*pos.top});
 					}
-					c--;
-					eventFun.eqClass(c,controltabboxChild);		
+					c--;	
 					elem.stop(true,true).animate({
-						left: pos.left + (-lenW*c)
-					});
+						top: eventFun.returnWfRange(c)
+					},options.speed);
 				}
+			},
+			//下一页 向上无缝滚动;首位前面添加一个末尾的图片;末尾添加一个首位的图片 视差来实现无缝
+			lookPagenClickScrollUp: function() {
+				if(eventFun._booleanAnimate()){
+					c++;
+					if (c == len) {
+						c = 0;
+						elem.css({top:c*pos.top});
+					}
+					elem.stop(true,true).animate({
+						top:eventFun.returnWfRange(c)
+					}, options.speed);
+				}
+				
 			},
 			//图片容器上一级父及的处理程序
 			elemhover: function(event) {
@@ -240,38 +302,38 @@
 		window.onresize=function(){setStyle.setTabNavCss();};
 		setStyle.setTabNavCss=function(){
 			setStyle.fullScreenW();
-			controltabbox.css({//设置控制按钮box的width;因为定位之后他宽度会随着定位的父级
-				width:(options.tabNavMr+controltabboxChild.eq(0).width())*len
-			})
-			switch(options.tabNavPosition) {
-				case 'middle':
-					controltabbox.css({
-						bottom:10,
-						position: 'absolute',
-						left:setStyle.middleLeft/2,
-						'margin-left':-(controltabbox.width()-options.tabNavMr)/2
-					});
-					break;
-				case 'right':
-					controltabbox.css({
-						right:30,
-						bottom:10,
-						position: 'absolute'
-					});
-					break;
-				case 'rightMiddle':
-					controltabboxChild.css({'float':'none','margin-right':0,'margin-bottom':options.tabNavMr});
-					controltabbox.css({
-						width:controltabboxChild.eq(0).width(),
-						right:15,
-						position: 'absolute',
-						top:lenH/2,
-						'margin-top':-(controltabbox.height()-options.tabNavMr)/2
-					});
-					break;
+			if(options.tabNavPosition){
+				switch(options.tabNavPosition) {
+					case 'middle':
+						controltabbox.css({
+							bottom:10,
+							position: 'absolute',
+							left:setStyle.middleLeft/2,
+							'margin-left':-(controltabbox.width()-options.tabNavMr)/2
+						});
+						break;
+					case 'right':
+						controltabbox.css({
+							right:30,
+							bottom:10,
+							position: 'absolute'
+						});
+						break;
+					case 'rightMiddle':
+						controltabboxChild.css({'float':'none','margin-right':0,'margin-bottom':options.tabNavMr});
+						controltabbox.css({
+							width:controltabboxChild.eq(0).width(),
+							right:15,
+							position: 'absolute',
+							top:lenH/2,
+							'margin-top':-(controltabbox.height()-options.tabNavMr)/2
+						});
+						break;
+				}
 			}
+			
 		};
-		setStyle.elemW=0,setStyle.elemParentW=0;//给setStyle 添加两个公用属性 容器的宽度和容器父级的宽度
+		setStyle.elemW=0,setStyle.elemH=0,setStyle.elemParentW=0,setStyle.elemParentH;//给setStyle 添加四个公用属性 容器的宽度和容器父级的宽度
 		//efade 效果需设置的样式
 		setStyle.setFadeCss=function(){
 			elem.height(lenH).parent().height(lenH);
@@ -283,37 +345,46 @@
 		};
 		//不同效果 需设置图片容器宽度
 		setStyle.setElemCss=function(){
-			// 图片个数分为 1，大于1
 			//每屏图片个数会影响其父级及父级的父级的宽度
-			if(options.firstScreenShowNum>1){
-				setStyle.elemParentW=(options.firstScreenShowNum*lenW)+((options.firstScreenShowNum-1)*options.firstScreenShowMr);
-				setStyle.elemW=(len * lenW)+(len*options.firstScreenShowMr);
-			}else{
-				setStyle.elemW=len * lenW;
-				setStyle.elemParentW=options.firstScreenShowNum*lenW;
+			setStyle.elemParentW=(options.firstScreenShowNum*lenW)+((options.firstScreenShowNum-1)*options.firstScreenShowMr);
+			setStyle.elemW=(len * lenW)+(len*options.firstScreenShowMr);
+			setStyle.elemParentH=(options.firstScreenShowNum*lenH)+((options.firstScreenShowNum-1)*options.firstScreenShowMr);
+			setStyle.elemH=(len * lenH)+(len*options.firstScreenShowMr);
+			if(options.effect=='lookScroll'){//重置len 因为这个效果是前后都多添了options.firstScreenShowNum个元素
+				len=(len-(options.firstScreenShowNum*2))/options.firstScreenShowNum;
+				console.log(len);
 			}
-			elem.css({
-				width: setStyle.elemW
-			});
-			elem.parent().css({
-				width:setStyle.elemParentW,
-				height:lenH
-			});
-			li.css({
-				'margin-right':options.firstScreenShowMr,
-			});
+			if(options.direction=='up'){
+				elem.css({
+					height: setStyle.elemH,
+					width:lenW
+				});
+				li.css({
+					'margin-bottom':options.firstScreenShowMr,
+					'float':'none'
+				});
+				elem.parent().css({
+					height:setStyle.elemParentH,
+					width:lenW
+				});
+			}else{
+				elem.css({
+					width: setStyle.elemW
+				});
+				li.css({
+					'margin-right':options.firstScreenShowMr,
+				});
+				elem.parent().css({
+					width:setStyle.elemParentW,
+					height:lenH
+				});
+			}
+			
 		};		
 		//创建追加控制按钮元素
 		function createElem(){
 			//tab控制按钮
 			if(options.tabNav){
-				if(options.effect=='lookScroll'){//重置len 因为这个效果是前后都多添了options.firstScreenShowNum个元素
-					if(options.firstScreenShowNum>1){
-						len=(len-(options.firstScreenShowNum*2))/options.firstScreenShowNum
-					}else{
-						len=len-2;
-					}
-				}
 				controltabbox = $('<ul></ul>');//tab控制按钮盒子
 				controltabnav = "<li></li>";//tab控制按钮盒子内部元素
 				controltabbox.appendTo(elem.parent());//tab控制按钮追加到文档
@@ -325,6 +396,9 @@
 				controltabboxChild.eq(0).addClass(options.tabnavCur);//第一个增加当前样式
 				controltabboxChild.css({'margin-right':options.tabNavMr});
 				controltabboxChild.bind('mouseenter mouseleave', eventFun.tabnavhover);
+				controltabbox.css({//设置控制按钮box的width;因为定位之后他宽度会随着定位的父级
+					width:(options.tabNavMr+controltabboxChild.eq(0).width())*len
+				})
 				setStyle.setTabNavCss();
 			}
 			//页码控制按钮
@@ -333,37 +407,62 @@
 				prev = $('<div><</div>');//下一页盒子
 				next.addClass(options.next).appendTo(elem.parent()).hide();//上一页盒子增加样式
 				prev.addClass(options.prev).appendTo(elem.parent()).hide();//下一页盒子增加样式
+				var handlerN,handlerP;
 				if(options.effect=='efade'){
 					next.bind('click', eventFun.pagenClickEfade);//上一个委派单击
 					prev.bind('click', eventFun.pagepClickEfade);//下一个委派单击
 				}
 				if(options.effect=='wfScroll'){
-					next.bind('click', eventFun.pagenClickwf);//上一个委派单击
-					prev.bind('click', eventFun.pagepClickwf);//下一个委派单击
+					if(options.direction=='up'){
+						handlerP=eventFun.pagepClickwfUp;
+						handlerN=eventFun.pagenClickwfUp;
+					}else{
+						handlerP=eventFun.pagepClickwf;
+						handlerN=eventFun.pagenClickwf;
+					}
+					
 				}
 				if(options.effect=='lookScroll'){
-					next.bind('click', eventFun.lookPagenClickScroll);//上一个委派单击
-					prev.bind('click', eventFun.lookPagepClickScroll);//下一个委派单击
+					if(options.direction=='up'){
+						handlerP=eventFun.lookPagepClickScrollUp;
+						handlerN=eventFun.lookPagenClickScrollUp;
+					}else{
+						handlerP=eventFun.lookPagepClickScroll;
+						handlerN=eventFun.lookPagenClickScroll;
+					}
+					
 				}
-				if(options.effect=='scroll'||options.effect=='tabScroll'){
-					next.bind('click', eventFun.pagenClickScroll);//上一个委派单击
-					prev.bind('click', eventFun.pagepClickScroll);//下一个委派单击
+				if(options.effect=='scroll'){
+					handlerP=eventFun.pagepClickScroll;
+					handlerN=eventFun.pagenClickScroll;
 				}
-				
+				next.bind('click', handlerN);//上一个委派单击
+				prev.bind('click', handlerP);//下一个委派单击
 			}	
 		}
 		// 效果对象
 		var effects=$.fn.hcjSlider.effects={
 			// 无缝首位互换位置
 			wfScroll:function(){
-				elem.animate({
-					left: eventFun.returnWfRange(1)//这种效果只需要传个1 就行 因为不需要跟着索引递增
-				}, options.speed, function() {
-					elem.css({
-						left: 0
+				if(options.direction=='up'){
+					elem.animate({
+						top: eventFun.returnWfRange(1)//这种效果只需要传个1 就行 因为不需要跟着索引递增
+					}, options.speed, function() {
+						elem.css({
+							top: 0
+						});
+						eventFun._replaceFirst(0);
 					});
-					eventFun._replaceFirst(0);
-				});
+				}else{
+					elem.animate({
+						left: eventFun.returnWfRange(1)//这种效果只需要传个1 就行 因为不需要跟着索引递增
+					}, options.speed, function() {
+						elem.css({
+							left: 0
+						});
+						eventFun._replaceFirst(0);
+					});
+				}
 			},
 			// 来回滚
 			scroll:function(){
@@ -383,14 +482,26 @@
 				c++;
 				if(c==len){
 					c=0;
-					elem.css({left:0});
+					if(options.direction=='up'){
+						elem.css({top:0});
+					}else{
+						elem.css({left:0});
+					}
+					
 				}
-				elem.animate({
-					left: eventFun.returnWfRange(c)
-				}, options.speed);
-				if(options.tabNav){
-					eventFun.eqClass(c,controltabboxChild);
-				}	
+				if(options.direction=='up'){
+					elem.animate({
+						top: eventFun.returnWfRange(c)
+					}, options.speed);
+				}else{
+					elem.animate({
+						left: eventFun.returnWfRange(c)
+					}, options.speed);
+					if(options.tabNav){
+						eventFun.eqClass(c,controltabboxChild);
+					}	
+				}
+				
 			},
 			// 淡入
 			efade:function(){
