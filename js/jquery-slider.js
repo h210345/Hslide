@@ -3,7 +3,6 @@
 		var	elem = $(this),//传入的选择器
 			li = elem.children(),//图片集合
 			len = li.length;//图片长度
-			console.log(this);
 		if(len<=1||this.length==0){
 			return;
 		}
@@ -137,10 +136,9 @@
 					}
 					eventFun.eqClass(c,controltabboxChild); 
 					elem.stop(true,true).animate({
-						left: pos.left + (-lenW*c)
+						left: eventFun.returnWfRange(c)
 					}, options.speed);
 				}
-				
 			},
 			//上一页滚到头再返回处理程序
 			pagepClickScroll: function() {
@@ -151,7 +149,7 @@
 					c--;
 					eventFun.eqClass(c,controltabboxChild);		
 					elem.stop(true,true).animate({
-						left: pos.left + (-lenW*c)
+						left: eventFun.returnWfRange(c)
 					});
 				}
 			},
@@ -289,50 +287,6 @@
 			}
 		};
 		var setStyle=$.fn.hcjSlider.setStyle={};
-		//设置tab控制按钮的样式
-		setStyle.middleLeft=null;
-		setStyle.fullScreenW=function(){
-			var windowW=$('body').width();
-			if(lenW>=windowW){
-				setStyle.middleLeft=windowW;
-			}else{
-				setStyle.middleLeft=setStyle.elemParentW;
-			}
-		};
-		window.onresize=function(){setStyle.setTabNavCss();};
-		setStyle.setTabNavCss=function(){
-			setStyle.fullScreenW();
-			if(options.tabNavPosition){
-				switch(options.tabNavPosition) {
-					case 'middle':
-						controltabbox.css({
-							bottom:10,
-							position: 'absolute',
-							left:setStyle.middleLeft/2,
-							'margin-left':-(controltabbox.width()-options.tabNavMr)/2
-						});
-						break;
-					case 'right':
-						controltabbox.css({
-							right:30,
-							bottom:10,
-							position: 'absolute'
-						});
-						break;
-					case 'rightMiddle':
-						controltabboxChild.css({'float':'none','margin-right':0,'margin-bottom':options.tabNavMr});
-						controltabbox.css({
-							width:controltabboxChild.eq(0).width(),
-							right:15,
-							position: 'absolute',
-							top:lenH/2,
-							'margin-top':-(controltabbox.height()-options.tabNavMr)/2
-						});
-						break;
-				}
-			}
-			
-		};
 		setStyle.elemW=0,setStyle.elemH=0,setStyle.elemParentW=0,setStyle.elemParentH;//给setStyle 添加四个公用属性 容器的宽度和容器父级的宽度
 		//efade 效果需设置的样式
 		setStyle.setFadeCss=function(){
@@ -352,7 +306,8 @@
 			setStyle.elemH=(len * lenH)+(len*options.firstScreenShowMr);
 			if(options.effect=='lookScroll'){//重置len 因为这个效果是前后都多添了options.firstScreenShowNum个元素
 				len=(len-(options.firstScreenShowNum*2))/options.firstScreenShowNum;
-				console.log(len);
+			}else{
+				len=len/options.firstScreenShowNum;
 			}
 			if(options.direction=='up'){
 				elem.css({
@@ -379,10 +334,9 @@
 					height:lenH
 				});
 			}
-			
 		};		
 		//创建追加控制按钮元素
-		function createElem(){
+		function controlElem(){
 			//tab控制按钮
 			if(options.tabNav){
 				controltabbox = $('<ul></ul>');//tab控制按钮盒子
@@ -399,7 +353,43 @@
 				controltabbox.css({//设置控制按钮box的width;因为定位之后他宽度会随着定位的父级
 					width:(options.tabNavMr+controltabboxChild.eq(0).width())*len
 				})
-				setStyle.setTabNavCss();
+				
+				//设置tab控制按钮的样式
+				var middleLeft;var windowW=$('body').width();
+				if(lenW>=windowW){//如果是全屏显示图片
+					middleLeft=windowW;
+				}else{
+					middleLeft=setStyle.elemParentW;
+				}
+				// tab按钮 不同位置不同样式
+				switch(options.tabNavPosition) {
+					case 'middle':
+						controltabbox.css({
+							bottom:10,
+							position: 'absolute',
+							left:middleLeft/2,
+							'margin-left':-(controltabbox.width()-options.tabNavMr)/2
+						});
+						break;
+					case 'right':
+						controltabbox.css({
+							right:30,
+							bottom:10,
+							position: 'absolute'
+						});
+						break;
+					case 'rightMiddle':
+						controltabboxChild.css({'float':'none','margin-right':0,'margin-bottom':options.tabNavMr});
+						controltabbox.css({
+							width:controltabboxChild.eq(0).width(),
+							right:15,
+							position: 'absolute',
+							top:lenH/2,
+							'margin-top':-(controltabbox.height()-options.tabNavMr)/2
+						});
+						break;
+				}
+
 			}
 			//页码控制按钮
 			if(options.pageNav){
@@ -473,9 +463,7 @@
 				elem.animate({
 					left: eventFun.returnWfRange(c)
 				}, options.speed);
-				if(options.tabNav){
-					eventFun.eqClass(c,controltabboxChild);
-				}	
+				eventFun.eqClass(c,controltabboxChild);
 			},
 			// 无缝滚动;首位前面添加一个末尾的图片;末尾添加一个首位的图片 视差来实现无缝 原理：到末尾left设置0  倒序就是left 
 			lookScroll:function(){
@@ -487,7 +475,6 @@
 					}else{
 						elem.css({left:0});
 					}
-					
 				}
 				if(options.direction=='up'){
 					elem.animate({
@@ -501,7 +488,6 @@
 						eventFun.eqClass(c,controltabboxChild);
 					}	
 				}
-				
 			},
 			// 淡入
 			efade:function(){
@@ -522,7 +508,7 @@
 				setStyle.setFadeCss();
 			}
 			if(options.tabNav||options.pageNav){//按钮控制显示判断
-				createElem();
+				controlElem();
 			}
 			eventFun.setTimer(effects[options.effect]);
 			// 总容器委派事件

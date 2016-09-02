@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="x-ua-compatible" content="IE=Edge, chrome=1" />
+	<meta name="title" content="" />
+	<meta name="keywords" content="" />
+	<meta name="description" content="" />
+	<title>到头再回来 2张 </title>
+	<style>
+		.clf:after{ display: block; content: ''; clear: both; height: 0; visibility: hidden; }
+		*{padding:0;margin:0;}
+		body{overflow-x:hidden; }
+		img{border:none;vertical-align: middle;}
+		a{text-decoration: none;outline: none;}
+		ul,li{list-style: none;}
+		.sliderWrap{overflow: hidden;position: relative;margin:0 auto;}
+		#slider{overflow: hidden;position: absolute;left:0;width: 300%;}
+		#slider li{overflow: hidden;float: left;width: 439px;height: 236px;}
+		.prev,.next{position: absolute;top:50%;margin-top:-25px;height: 50px;line-height: 50px;width: 50px;text-align: center;background-color:#000;background-color: rgba(0,0,0,.25);color:white;font-family: simsun;font-size: 30px;cursor: pointer;-moz-user-select:none;}
+		.prev{left:0;}
+		.next{right:0;}
+		.span{display:block;width:15px;height: 15px;border-radius: 50%;background-color: #c7ceb8;cursor: pointer;float: left;}
+		.span.current{background-color:#84b308;}
+
+	</style>
+</head>
+<body>
+	<div class="sliderWrap">	
+		<ul id="slider">
+			<li><a href=""><img src="images/7.jpg" alt=""></a></li>
+			<li><a href=""><img src="images/8.jpg" alt=""></a></li>
+			<li><a href=""><img src="images/9.jpg" alt=""></a></li>
+			<li><a href=""><img src="images/10.jpg" alt=""></a></li>
+			<li><a href=""><img src="images/11.jpg" alt=""></a></li>
+			<li><a href=""><img src="images/12.jpg" alt=""></a></li>
+			<li><a href=""><img src="images/13.jpg" alt=""></a></li>
+			<li><a href=""><img src="images/14.jpg" alt=""></a></li>
+		</ul>
+	</div>
+<script src="js/jquery-1.11.1.js"></script>
+<script src="js/jquery-slider.js"></script>
+<script>
+	$(function(){
+		$("#slider").hcjSlider({
+			tabNav:true,
+			pageNav:true,
+			tabNavPosition:'middle',
+			tabnavCur:'current',
+			tabNavChildStyle:'span',
+			effect:'scroll',
+			tabNavMr:6,
+			firstScreenShowNum:2,
+			firstScreenShowMr:6,
+			prev:'prev',
+			next:'next',
+			direction:'left',
+			speed:500,
+		});
+	});
+</script>
+</body>
+</html>
+		
