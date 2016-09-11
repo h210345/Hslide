@@ -15,8 +15,9 @@
 			tabNavChildStyle: 'span', //tab控制按钮公共样式
 			effect: 'scroll', //动画的效果 默认滚动
 			tabNavMr: 6, //默认是6
-			prev: 'prev',
-			next: 'next',
+			prev: 'prev',//控制按钮样式
+			next: 'next',//控制按钮样式
+			speed:1000,//运动的速度
 			direction: 'left',
 			firstScreenShowNum: 1, ////tab控制按钮右外边距 默认是1
 			firstScreenShowMr: 0 //如果首屏显示个数大于1  给每个图片大的右边距 默认0
@@ -135,7 +136,7 @@
 						c = 0;
 					}
 					eventFun.eqClass(c, controltabboxChild);
-					elem.stop(true, true).animate({
+					elem.animate({
 						left: eventFun.returnWfRange(c)
 					}, options.speed);
 				}
@@ -148,7 +149,7 @@
 					}
 					c--;
 					eventFun.eqClass(c, controltabboxChild);
-					elem.stop(true, true).animate({
+					elem.animate({
 						left: eventFun.returnWfRange(c)
 					});
 				}
@@ -164,7 +165,7 @@
 					}
 					c--;
 					eventFun.eqClass(c, controltabboxChild);
-					elem.stop(true, true).animate({
+					elem.animate({
 						left: eventFun.returnWfRange(c)
 					}, options.speed);
 				}
@@ -180,7 +181,7 @@
 						});
 					}
 					eventFun.eqClass(c, controltabboxChild);
-					elem.stop(true, true).animate({
+					elem.animate({
 						left: eventFun.returnWfRange(c)
 					}, options.speed);
 				}
@@ -196,7 +197,7 @@
 						});
 					}
 					c--;
-					elem.stop(true, true).animate({
+					elem.animate({
 						top: eventFun.returnWfRange(c)
 					}, options.speed);
 				}
@@ -211,7 +212,7 @@
 							top: c * pos.top
 						});
 					}
-					elem.stop(true, true).animate({
+					elem.animate({
 						top: eventFun.returnWfRange(c)
 					}, options.speed);
 				}
@@ -338,7 +339,7 @@
 					'margin-right': options.firstScreenShowMr
 				});
 				elem.parent().css({
-					width: width: setStyle.elemParentW>=$(window).width()?'100%':setStyle.elemParentW,//解决下一页按钮超出屏幕
+					width:setStyle.elemParentW>=$(window).width()?'100%':setStyle.elemParentW,//解决下一页按钮超出屏幕
 					height: lenH
 				});
 			}
