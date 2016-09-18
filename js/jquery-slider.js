@@ -15,9 +15,8 @@
 			tabNavChildStyle: 'span', //tab控制按钮公共样式
 			effect: 'scroll', //动画的效果 默认滚动
 			tabNavMr: 6, //默认是6
-			prev: 'prev',//控制按钮样式
-			next: 'next',//控制按钮样式
-			speed:1000,//运动的速度
+			prev: 'prev',
+			next: 'next',
 			direction: 'left',
 			firstScreenShowNum: 1, ////tab控制按钮右外边距 默认是1
 			firstScreenShowMr: 0 //如果首屏显示个数大于1  给每个图片大的右边距 默认0
@@ -136,7 +135,7 @@
 						c = 0;
 					}
 					eventFun.eqClass(c, controltabboxChild);
-					elem.animate({
+					elem.stop(true, true).animate({
 						left: eventFun.returnWfRange(c)
 					}, options.speed);
 				}
@@ -149,7 +148,7 @@
 					}
 					c--;
 					eventFun.eqClass(c, controltabboxChild);
-					elem.animate({
+					elem.stop(true, true).animate({
 						left: eventFun.returnWfRange(c)
 					});
 				}
@@ -165,7 +164,7 @@
 					}
 					c--;
 					eventFun.eqClass(c, controltabboxChild);
-					elem.animate({
+					elem.stop(true, true).animate({
 						left: eventFun.returnWfRange(c)
 					}, options.speed);
 				}
@@ -181,7 +180,7 @@
 						});
 					}
 					eventFun.eqClass(c, controltabboxChild);
-					elem.animate({
+					elem.stop(true, true).animate({
 						left: eventFun.returnWfRange(c)
 					}, options.speed);
 				}
@@ -197,7 +196,7 @@
 						});
 					}
 					c--;
-					elem.animate({
+					elem.stop(true, true).animate({
 						top: eventFun.returnWfRange(c)
 					}, options.speed);
 				}
@@ -212,7 +211,7 @@
 							top: c * pos.top
 						});
 					}
-					elem.animate({
+					elem.stop(true, true).animate({
 						top: eventFun.returnWfRange(c)
 					}, options.speed);
 				}
@@ -519,6 +518,25 @@
 					eventFun.eqClass(c, controltabboxChild);
 				}
 				elem.children().eq(c).fadeIn(300).siblings().fadeOut(100);
+			},
+			marquee:function(){
+				options.firstScreenShowNum=1;//首位替换替换一个
+				if(options.direction=='up'){
+					elem.animate({
+						top:-lo
+					},lo*options.speed,'linear',function(){
+						elem.css({top:0});
+						eventFun._replaceFirst(0)
+					})
+				}else{
+					elem.animate({
+						left:-lo
+					},lo*options.speed,'linear',function(){
+						elem.css({left:0});
+						eventFun._replaceFirst(0)
+					})
+				}
+				
 			}
 		};
 		//判断效果是什么然后设置其样式
@@ -530,9 +548,20 @@
 			if (options.tabNav || options.pageNav) { //按钮控制显示判断
 				controlElem();
 			}
-			eventFun.setTimer(effects[options.effect]);
-			// 总容器委派事件
-			elem.parent().bind('mouseenter mouseleave', eventFun.elemhover); //给图片容器的上一级父级 委派事件 进入:动画停止;离开恢复动画;
+			if(options.effect!='marquee'){
+				eventFun.setTimer(effects[options.effect]);
+				// 总容器委派事件
+				elem.parent().bind('mouseenter mouseleave', eventFun.elemhover); //给图片容器的上一级父级 委派事件 进入:动画停止;离开恢复动画;
+			}else{
+				var lo;
+				if(options.direction=='up'){
+					lo=lenH+options.firstScreenShowMr;
+				}else{
+					lo=lenW+options.firstScreenShowMr;
+				}
+				setInterval(effects[options.effect],lo*options.speed);
+			}
+			
 		}
 	};
 })(jQuery);
