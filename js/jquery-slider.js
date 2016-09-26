@@ -3,6 +3,7 @@
 		var elem = $(this), //传入的选择器
 			li = elem.children(), //图片集合
 			len = li.length; //图片长度
+		// 不够效果的图片数 停止
 		if (len <= 1 || this.length == 0) {
 			return;
 		}
@@ -17,11 +18,15 @@
 			tabNavMr: 6, //默认是6
 			prev: 'prev',
 			next: 'next',
-			direction: 'left',
+			direction: 'left',//方向
 			firstScreenShowNum: 1, ////tab控制按钮右外边距 默认是1
 			firstScreenShowMr: 0 //如果首屏显示个数大于1  给每个图片大的右边距 默认0
 		};
 		var options = $.extend(defaults, opts);
+		// 如果每屏显示数大于等于总的长度
+		if(options.firstScreenShowNum>=len){
+			return;
+		}
 		var c = 0, //索引
 			timer, //定时器
 			lenW = li.eq(0).width(), //单个图片的宽度
@@ -285,6 +290,7 @@
 					}
 				}
 				if (length == len) { //此时尾做首
+					console.log(len);
 					if (options.firstScreenShowNum > 1) {
 						var gtLen = (len - options.firstScreenShowNum) - 1;
 						elem.find('li:gt(' + gtLen + ')').remove().prependTo(elem);
@@ -314,8 +320,6 @@
 			setStyle.elemH = (len * lenH) + (len * options.firstScreenShowMr);
 			if (options.effect == 'lookScroll') { //重置len 因为这个效果是前后都多添了options.firstScreenShowNum个元素
 				len = (len - (options.firstScreenShowNum * 2)) / options.firstScreenShowNum;
-			} else {
-				len = len / options.firstScreenShowNum;
 			}
 			if (options.direction == 'up') {
 				elem.css({
